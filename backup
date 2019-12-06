@@ -1,0 +1,9 @@
+BACKUP
+
+sudo /usr/local/bin/etcd-snapshot-backup.sh ./assets/backup/snapshot.db
+
+
+RESTORE
+
+[core@ip-10-0-143-125 ~]$ export INITIAL_CLUSTER="etcd-member-ip-10-0-143-125.ec2.internal=https://etcd-0.clustername.devcluster.openshift.com:2380,etcd-member-ip-10-0-35-108.ec2.internal=https://etcd-1.clustername.devcluster.openshift.com:2380,etcd-member-ip-10-0-10-16.ec2.internal=https://etcd-2.clustername.devcluster.openshift.com:2380"
+[core@ip-10-0-143-125 ~]$ sudo /usr/local/bin/etcd-snapshot-restore.sh /home/core/snapshot.db $INITIAL_CLUSTER
