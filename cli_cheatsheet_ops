@@ -4,82 +4,101 @@ Bulk collect data about the current state of your cluster to debug issues.
 
 Example: Gather debugging information
 $ oc adm must-gather
+
+
 top
 Show usage statistics of resources on the server.
 
 Example: Show CPU and memory usage for Pods
 $ oc adm top pods
+
 Example: Show usage statistics for images
 $ oc adm top images
+
 Node management CLI commands
 cordon
 Mark a node as unschedulable. Manually marking a node as unschedulable blocks any new pods from being scheduled on the node, but does not affect existing pods on the node.
 
 Example: Mark node1 as unschedulable
 $ oc adm cordon node1
+
 drain
 Drain a node in preparation for maintenance.
 
 Example: Drain node1
 $ oc adm drain node1
+
 node-logs
 Display and filter node logs.
 
 Example: Get logs for NetworkManager
 $ oc adm node-logs --role master -u NetworkManager.service
+
 taint
 Update the taints on one or more nodes.
 
 Example: Add a taint to dedicate a node for a set of users
 $ oc adm taint nodes node1 dedicated=groupName:NoSchedule
+
 Example: Remove the taints with key dedicated from node node1
 $ oc adm taint nodes node1 dedicated-
+
 uncordon
 Mark a node as schedulable.
 
 Example: Mark node1 as schedulable
 $ oc adm uncordon node1
+
 Security and policy CLI commands
 certificate
 Approve or reject certificate signing requests (CSRs).
 
 Example: Approve a CSR
 $ oc adm certificate approve csr-sqgzp
+
 groups
 Manage groups in your cluster.
 
 Example: Create a new group
 $ oc adm groups new my-group
+
 new-project
 Create a new project and specify administrative options.
 
 Example: Create a new project using a node selector
 $ oc adm new-project myproject --node-selector='type=user-node,region=east'
+
 pod-network
 Manage Pod networks in the cluster.
 
 Example: Isolate project1 and project2 from other non-global projects
 $ oc adm pod-network isolate-projects project1 project2
+
 policy
 Manage roles and policies on the cluster.
 
 Example: Add the edit role to user1 for all projects
 $ oc adm policy add-cluster-role-to-user edit user1
+
 Example: Add the privileged security context constraint to a service account
 $ oc adm policy add-scc-to-user privileged -z myserviceaccount
+
 Maintenance CLI commands
 migrate
 Migrate resources on the cluster to a new version or format depending on the subcommand used.
 
 Example: Perform an update of all stored objects
 $ oc adm migrate storage
+
 Example: Perform an update of only Pods
 $ oc adm migrate storage --include=pods
+
 prune
 Remove older versions of resources from the server.
 
 Example: Prune older builds including those whose BuildConfigs no longer exist
 $ oc adm prune builds --orphans
+
 Configuration CLI commands
 create-api-client-config
 Create a client configuration for connecting to the server. This creates a folder containing a client certificate, a client key, a server certificate authority, and a kubeconfig file for connecting to the master as the provided user.
@@ -92,21 +111,25 @@ $ oc adm create-api-client-config \
   --signer-key='/etc/origin/master/proxyca.key' \
   --signer-serial='/etc/origin/master/proxyca.serial.txt' \
   --user='system:proxy'
+  
 create-bootstrap-policy-file
 Create the default bootstrap policy.
 
 Example: Create a file called policy.json with the default bootstrap policy
 $ oc adm create-bootstrap-policy-file --filename=policy.json
+
 create-bootstrap-project-template
 Create a bootstrap project template.
 
 Example: Output a bootstrap project template in YAML format to stdout
 $ oc adm create-bootstrap-project-template -o yaml
+
 create-error-template
 Create a template for customizing the error page.
 
 Example: Output a template for the error page to stdout
 $ oc adm create-error-template
+
 create-kubeconfig
 Creates a basic .kubeconfig file from client certificates.
 
@@ -120,29 +143,35 @@ Create a template for customizing the login page.
 
 Example: Output a template for the login page to stdout
 $ oc adm create-login-template
+
 create-provider-selection-template
 Create a template for customizing the provider selection page.
 
 Example: Output a template for the provider selection page to stdout
 $ oc adm create-provider-selection-template
+
 Other Administrator CLI commands
 build-chain
 Output the inputs and dependencies of any builds.
 
 Example: Output dependencies for the perl imagestream
 $ oc adm build-chain perl
+
 completion
 Output shell completion code for the oc adm commands for the specified shell.
 
 Example: Display oc adm completion code for Bash
 $ oc adm completion bash
+
 config
 Manage the client configuration files. This command has the same behavior as the oc config command.
 
 Example: Display the current configuration
 $ oc adm config view
+
 Example: Switch to a different context
 $ oc adm config use-context test-context
+
 release
 Manage various aspects of the OpenShift Container Platform release process, such as viewing information about a release or inspecting the contents of a release.
 
