@@ -46,3 +46,73 @@ spec:
     
     
 oc create -f core-object-counts.yaml -n demoproject
+oc get quota -n demoproject
+
+oc describe quota core-object-counts -n demoproject
+
+
+admissionConfig:
+  pluginConfig:
+    ResourceQuota:
+      configuration:
+        apiVersion: resourcequota.admission.k8s.io/v1alpha1
+        kind: Configuration
+        limitedResources:
+        - resource: persistentvolumeclaims 
+        matchContains:
+        - gold.storageclass.storage.k8s.io/requests.storage
+        
+oc create clusterquota for-user --project-annotation-selector openshift.io/requester=<user_name> --hard pods=10 --hard secrets=20
+
+apiVersion: v1
+kind: ClusterResourceQuota
+metadata:
+  name: for-user
+spec:
+  quota: 
+    hard:
+      pods: "10"
+      secrets: "20"
+  selector:
+    annotations: 
+      openshift.io/requester: <user_name>
+    labels: null 
+status:
+  namespaces: 
+  - namespace: ns-one
+    status:
+      hard:
+        pods: "10"
+        secrets: "20"
+      used:
+        pods: "1"
+        secrets: "9"
+  total: 
+    hard:
+      pods: "10"
+      secrets: "20"
+    used:
+      pods: "1"
+      secrets: "9"
+      
+ oc create clusterresourcequota for-name --project-label-selector=name=frontend --hard=pods=10 --hard=secrets=20
+ 
+ 
+apiVersion: v1
+kind: ClusterResourceQuota
+metadata:
+  creationTimestamp: null
+  name: for-name
+spec:
+  quota:
+    hard:
+      pods: "10"
+      secrets: "20"
+  selector:
+    annotations: null
+    labels:
+      matchLabels:
+        name: frontend
+        
+oc describe AppliedClusterResourceQuota
+
