@@ -1,0 +1,349 @@
+Basic CLI commands
+explain
+Display documentation for a certain resource.
+
+Example: Display documentation for Pods
+$ oc explain pods
+login
+Log in to the OpenShift Container Platform server and save login information for subsequent use.
+
+Example: Interactive login
+$ oc login
+Example: Log in specifying a user name
+$ oc login -u user1
+new-app
+Create a new application by specifying source code, a template, or an image.
+
+Example: Create a new application from a local Git repository
+$ oc new-app .
+Example: Create a new application from a remote Git repository
+$ oc new-app https://github.com/sclorg/cakephp-ex
+Example: Create a new application from a private remote repository
+$ oc new-app https://github.com/youruser/yourprivaterepo --source-secret=yoursecret
+new-project
+Create a new project and switch to it as the default project in your configuration.
+
+Example: Create a new project
+$ oc new-project myproject
+project
+Switch to another project and make it the default in your configuration.
+
+Example: Switch to a different project
+$ oc project test-project
+projects
+Display information about the current active project and existing projects on the server.
+
+Example: List all projects
+$ oc projects
+status
+Show a high-level overview of the current project.
+
+Example: Show the status of the current project
+$ oc status
+Build and Deploy CLI commands
+cancel-build
+Cancel a running, pending, or new build.
+
+Example: Cancel a build
+$ oc cancel-build python-1
+Example: Cancel all pending builds from the python BuildConfig
+$ oc cancel-build buildconfig/python --state=pending
+import-image
+Import the latest tag and image information from an image repository.
+
+Example: Import the latest image information
+$ oc import-image my-ruby
+new-build
+Create a new BuildConfig from source code.
+
+Example: Create a BuildConfig from a local Git repository
+$ oc new-build .
+Example: Create a BuildConfig from a remote Git repository
+$ oc new-build https://github.com/sclorg/cakephp-ex
+rollback
+Revert an application back to a previous Deployment.
+
+Example: Roll back to the last successful Deployment
+$ oc rollback php
+Example: Roll back to a specific version
+$ oc rollback php --to-version=3
+rollout
+Start a new rollout, view its status or history, or roll back to a previous revision of your application.
+
+Example: Roll back to the last successful Deployment
+$ oc rollout undo deploymentconfig/php
+Example: Start a new rollout for a DeploymentConfig with its latest state
+$ oc rollout latest deploymentconfig/php
+start-build
+Start a build from a BuildConfig or copy an existing build.
+
+Example: Start a build from the specified BuildConfig
+$ oc start-build python
+Example: Start a build from a previous build
+$ oc start-build --from-build=python-1
+Example: Set an environment variable to use for the current build
+$ oc start-build python --env=mykey=myvalue
+tag
+Tag existing images into imagestreams.
+
+Example: Configure the ruby image’s latest tag to refer to the image for the 2.0 tag
+$ oc tag ruby:latest ruby:2.0
+Application management CLI commands
+annotate
+Update the annotations on one or more resources.
+
+Example: Add an annotation to a Route
+$ oc annotate route/test-route haproxy.router.openshift.io/ip_whitelist="192.168.1.10"
+Example: Remove the annotation from the Route
+$ oc annotate route/test-route haproxy.router.openshift.io/ip_whitelist-
+apply
+Apply a configuration to a resource by file name or standard in (stdin) in JSON or YAML format.
+
+Example: Apply the configuration in pod.json to a Pod
+$ oc apply -f pod.json
+autoscale
+Autoscale a DeploymentConfig or ReplicationController.
+
+Example: Autoscale to a minimum of two and maximum of five Pods
+$ oc autoscale deploymentconfig/parksmap-katacoda --min=2 --max=5
+create
+Create a resource by file name or standard in (stdin) in JSON or YAML format.
+
+Example: Create a Pod using the content in pod.json
+$ oc create -f pod.json
+delete
+Delete a resource.
+
+Example: Delete a Pod named parksmap-katacoda-1-qfqz4
+$ oc delete pod/parksmap-katacoda-1-qfqz4
+Example: Delete all Pods with the app=parksmap-katacoda label
+$ oc delete pods -l app=parksmap-katacoda
+describe
+Return detailed information about a specific object.
+
+Example: Describe a Deployment named example
+$ oc describe deployment/example
+Example: Describe all Pods
+$ oc describe pods
+edit
+Edit a resource.
+
+Example: Edit a DeploymentConfig using the default editor
+$ oc edit deploymentconfig/parksmap-katacoda
+Example: Edit a DeploymentConfig using a different editor
+$ OC_EDITOR="nano" oc edit deploymentconfig/parksmap-katacoda
+Example: Edit a DeploymentConfig in JSON format
+$ oc edit deploymentconfig/parksmap-katacoda -o json
+expose
+Expose a Service externally as a Route.
+
+Example: Expose a Service
+$ oc expose service/parksmap-katacoda
+Example: Expose a Service and specify the host name
+$ oc expose service/parksmap-katacoda --hostname=www.my-host.com
+get
+Display one or more resources.
+
+Example: List Pods in the default namespace
+$ oc get pods -n default
+Example: Get details about the python DeploymentConfig in JSON format
+$ oc get deploymentconfig/python -o json
+label
+Update the labels on one or more resources.
+
+Example: Update the python-1-mz2rf Pod with the label status set to unhealthy
+$ oc label pod/python-1-mz2rf status=unhealthy
+scale
+Set the desired number of replicas for a ReplicationController or a DeploymentConfig.
+
+Example: Scale the ruby-app DeploymentConfig to three Pods
+$ oc scale deploymentconfig/ruby-app --replicas=3
+secrets
+Manage secrets in your project.
+
+Example: Allow my-pull-secret to be used as an image pull secret by the default service account
+$ oc secrets link default my-pull-secret --for=pull
+serviceaccounts
+Get a token assigned to a service account or create a new token or kubeconfig file for a service account.
+
+Example: Get the token assigned to the default service account
+$ oc serviceaccounts get-token default
+set
+Configure existing application resources.
+
+Example: Sets the name of a secret on a BuildConfig
+$ oc set build-secret --source buildconfig/mybc mysecret
+Troubleshooting and debugging CLI commands
+attach
+Attach the shell to a running container.
+
+Example: Get output from the python container from Pod python-1-mz2rf
+$ oc attach python-1-mz2rf -c python
+cp
+Copy files and directories to and from containers.
+
+Example: Copy a file from the python-1-mz2rf Pod to the local file system
+$ oc cp default/python-1-mz2rf:/opt/app-root/src/README.md ~/mydirectory/.
+debug
+Launch a command shell to debug a running application.
+
+Example: Debug the python Deployment
+$ oc debug deploymentconfig/python
+exec
+Execute a command in a container.
+
+Example: Execute the ls command in the python container from Pod python-1-mz2rf
+$ oc exec python-1-mz2rf -c python ls
+logs
+Retrieve the log output for a specific build, BuildConfig, DeploymentConfig, or Pod.
+
+Example: Stream the latest logs from the python DeploymentConfig
+$ oc logs -f deploymentconfig/python
+port-forward
+Forward one or more local ports to a Pod.
+
+Example: Listen on port 8888 locally and forward to port 5000 in the Pod
+$ oc port-forward python-1-mz2rf 8888:5000
+proxy
+Run a proxy to the Kubernetes API server.
+
+Example: Run a proxy to the API server on port 8011 serving static content from ./local/www/
+$ oc proxy --port=8011 --www=./local/www/
+rsh
+Open a remote shell session to a container.
+
+Example: Open a shell session on the first container in the python-1-mz2rf Pod
+$ oc rsh python-1-mz2rf
+rsync
+Copy contents of a directory to or from a running Pod container. Only changed files are copied using the rsync command from your operating system.
+
+Example: Synchronize files from a local directory with a Pod directory
+$ oc rsync ~/mydirectory/ python-1-mz2rf:/opt/app-root/src/
+run
+Create and run a particular image. By default, this creates a DeploymentConfig to manage the created containers.
+
+Example: Start an instance of the perl image with three replicas
+$ oc run my-test --image=perl --replicas=3
+wait
+Wait for a specific condition on one or more resources.
+
+Example: Wait for the python-1-mz2rf Pod to be deleted
+$ oc wait --for=delete pod/python-1-mz2rf
+Advanced developer CLI commands
+api-resources
+Display the full list of API resources that the server supports.
+
+Example: List the supported API resources
+$ oc api-resources
+api-versions
+Display the full list of API versions that the server supports.
+
+Example: List the supported API versions
+$ oc api-versions
+auth
+Inspect permissions and reconcile RBAC roles.
+
+Example: Check whether the current user can read Pod logs
+$ oc auth can-i get pods --subresource=log
+Example: Reconcile RBAC roles and permissions from a file
+$ oc auth reconcile -f policy.json
+cluster-info
+Display the address of the master and cluster services.
+
+Example: Display cluster information
+$ oc cluster-info
+convert
+Convert a YAML or JSON configuration file to a different API version and print to standard output (stdout).
+
+Example: Convert pod.yaml to the latest version
+$ oc convert -f pod.yaml
+extract
+Extract the contents of a ConfigMap or secret. Each key in the ConfigMap or secret is created as a separate file with the name of the key.
+
+Example: Download the contents of the ruby-1-ca ConfigMap to the current directory
+$ oc extract configmap/ruby-1-ca
+Example: Print the contents of the ruby-1-ca ConfigMap to stdout
+$ oc extract configmap/ruby-1-ca --to=-
+idle
+Idle scalable resources. An idled Service will automatically become unidled when it receives traffic or it can be manually unidled using the oc scale command.
+
+Example: Idle the ruby-app Service
+$ oc idle ruby-app
+image
+Manage images in your OpenShift Container Platform cluster.
+
+Example: Copy an image to another tag
+$ oc image mirror myregistry.com/myimage:latest myregistry.com/myimage:stable
+observe
+Observe changes to resources and take action on them.
+
+Example: Observe changes to Services
+$ oc observe services
+patch
+Updates one or more fields of an object using strategic merge patch in JSON or YAML format.
+
+Example: Update the spec.unschedulable field for node node1 to true
+$ oc patch node/node1 -p '{"spec":{"unschedulable":true}}'
+If you must patch a Custom Resource Definition, you must include the --type merge option in the command.
+
+policy
+Manage authorization policies.
+
+Example: Add the edit role to user1 for the current project
+$ oc policy add-role-to-user edit user1
+process
+Process a template into a list of resources.
+
+Example: Convert template.json to a resource list and pass to oc create
+$ oc process -f template.json | oc create -f -
+registry
+Manage the integrated registry on OpenShift Container Platform.
+
+Example: Display information about the integrated registry
+$ oc registry info
+replace
+Modify an existing object based on the contents of the specified configuration file.
+
+Example: Update a Pod using the content in pod.json
+$ oc replace -f pod.json
+Settings CLI commands
+completion
+Output shell completion code for the specified shell.
+
+Example: Display completion code for Bash
+$ oc completion bash
+config
+Manage the client configuration files.
+
+Example: Display the current configuration
+$ oc config view
+Example: Switch to a different context
+$ oc config use-context test-context
+logout
+Log out of the current session.
+
+Example: End the current session
+$ oc logout
+whoami
+Display information about the current session.
+
+Example: Display the currently authenticated user
+$ oc whoami
+Other developer CLI commands
+help
+Display general help information for the CLI and a list of available commands.
+
+Example: Display available commands
+$ oc help
+Example: Display the help for the new-project command
+$ oc help new-project
+plugin
+List the available plug-ins on the user’s PATH.
+
+Example: List available plug-ins
+$ oc plugin list
+version
+Display the oc client and server versions.
+
+Example: Display version information
+$ oc version
