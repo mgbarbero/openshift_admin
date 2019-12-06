@@ -1,0 +1,46 @@
+oc label nodes ip-10-0-142-25.ec2.internal type=user-node region=east
+
+
+kind: ReplicaSet
+
+....
+
+spec:
+
+....
+
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        ingresscontroller.operator.openshift.io/deployment-ingresscontroller: default
+        pod-template-hash: 66d5cf9464
+    spec:
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+        node-role.kubernetes.io/worker: ''
+        type: user-node 
+        
+        
+        
+oc label node node1 zone=us
+
+
+$ cat pod-s1.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-s1
+spec:
+  containers:
+    - image: "docker.io/ocpqe/hello-pod"
+      name: hello-pod
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "zone"
+              operator: In
+              values:
+              - us
